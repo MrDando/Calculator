@@ -13,3 +13,15 @@ function multiply (x ,y) {
 function divide (x, y) {
     return x / y;
 }
+
+function operate (operator, x , y) {
+    if (operator === 'add') {
+        return add(x,y);
+    } else if (operator === 'subtract') {
+        return subtract(x,y);
+    } else if (operator === 'multiply') {
+        return multiply(x,y);
+    } else {
+        return divide(x,y);
+    }
+}
