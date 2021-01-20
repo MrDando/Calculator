@@ -14,12 +14,12 @@ function divide (x, y) {
     return x / y;
 }
 
-function operate (operator, x , y) {
-    if (operator === 'add') {
+function operate (op, x , y) {
+    if (op === 'add') {
         return add(x,y);
-    } else if (operator === 'subtract') {
+    } else if (op === 'subtract') {
         return subtract(x,y);
-    } else if (operator === 'multiply') {
+    } else if (op === 'multiply') {
         return multiply(x,y);
     } else {
         return divide(x,y);
@@ -28,21 +28,45 @@ function operate (operator, x , y) {
 
 function keyPress(e) {
     if (e.target.className === 'key num-key') {
-        displayValue += e.target.value;
-        screen.innerText = displayValue;
+        if (displayValue === "0" || displayValue == result) {
+            displayValue = e.target.value;
+        } else {
+            displayValue += e.target.value;
+        } 
     } else if (e.target.id === "key-C") {
-       displayValue = "";
-       screen.innerText = displayValue;
-
+       displayValue = "0";
+       result = null;
     } else if (e.target.id === 'key-del') {
-        displayValue = displayValue.slice(0, -1)
-        screen.innerText = displayValue;
+        if (displayValue.length === 1) {
+            displayValue = "0";
+        } else {
+            displayValue = displayValue.slice(0, -1)
+        }
+    } else if (e.target.className === 'key op-key') {
+        if (!operator) {
+            result = Number(displayValue);
+            operator = e.target.value;
+        } else {
+            let x = result;
+            let y = Number(displayValue);
+            result = operate(operator, x, y);
+            operator = e.target.value;
+            displayValue = result.toString(10)
+        }    
+    } else if (e.target.id === 'key-equal') {
+        let x = result;
+        let y = Number(displayValue);
+        result = operate(operator, x, y);
+        displayValue = result.toString(10)
     }
+    screen.innerText = displayValue;
     
 }
 
 let screen = document.querySelector('#screen')
 let displayValue = "";
+let result = null;
+let operator;
 
 let keys = document.querySelectorAll(".key");
 keys.forEach(key => key.addEventListener('click', keyPress))
