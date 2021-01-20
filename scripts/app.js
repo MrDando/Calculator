@@ -59,7 +59,13 @@ function keyPress(e) {
         result = operate(operator, x, y);
         displayValue = result.toString(10)
     }
-    screen.innerText = displayValue;
+    if (displayValue.length > 16) {
+        let subStart = displayValue.length - 17;
+        let subEnd = displayValue.length - 1;
+        screen.innerText = displayValue.substring(subStart, subEnd)
+    } else {
+        screen.innerText = displayValue;
+    }
     
 }
 
