@@ -25,40 +25,43 @@ function operate (op, x , y) {
         return divide(x,y);
     }
 }
-
-function keyPress(e) {
-    if (e.target.className === 'key num-key') {
-        if (displayValue === "0" || displayValue == result) {
-            displayValue = e.target.value;
-        } else {
-            displayValue += e.target.value;
-        } 
-    } else if (e.target.id === "key-C") {
-       displayValue = "0";
-       result = null;
-    } else if (e.target.id === 'key-del') {
-        if (displayValue.length === 1) {
-            displayValue = "0";
-        } else {
-            displayValue = displayValue.slice(0, -1)
-        }
-    } else if (e.target.className === 'key op-key') {
-        if (!operator) {
-            result = Number(displayValue);
-            operator = e.target.value;
-        } else {
-            let x = result;
-            let y = Number(displayValue);
-            result = operate(operator, x, y);
-            operator = e.target.value;
-            displayValue = result.toString(10)
-        }    
-    } else if (e.target.id === 'key-equal') {
+function enterNumber (e) {
+    if (displayValue === "0" || displayValue == result) {
+        displayValue = e.target.value;
+    } else {
+        displayValue += e.target.value;
+    } 
+}
+function clear () {
+    displayValue = "0";
+    result = null;
+}
+function deleteChar () {
+    if (displayValue.length === 1) {
+        displayValue = "0";
+    } else {
+        displayValue = displayValue.slice(0, -1)
+    }
+}
+function performOperation (e) {
+    if (!operator) {
+        result = Number(displayValue);
+        operator = e.target.value;
+    } else {
         let x = result;
         let y = Number(displayValue);
         result = operate(operator, x, y);
+        operator = e.target.value;
         displayValue = result.toString(10)
-    }
+    }   
+}
+function calculate () {
+    let x = result;
+        let y = Number(displayValue);
+        result = operate(operator, x, y);
+        displayValue = result.toString(10)
+}
+function updateDisplay () {
     if (displayValue.length > 16) {
         let subStart = displayValue.length - 17;
         let subEnd = displayValue.length - 1;
@@ -66,7 +69,21 @@ function keyPress(e) {
     } else {
         screen.innerText = displayValue;
     }
-    
+}
+
+function keyPress(e) {
+    if (e.target.className === 'key num-key') {
+        enterNumber (e);
+    } else if (e.target.id === "key-C") {
+       clear();
+    } else if (e.target.id === 'key-del') {
+        deleteChar();
+    } else if (e.target.className === 'key op-key') {
+        performOperation(e);
+    } else if (e.target.id === 'key-equal') {
+        calculate();
+    }
+    updateDisplay();
 }
 
 let screen = document.querySelector('#screen')
