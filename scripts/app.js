@@ -70,6 +70,11 @@ function updateDisplay () {
         screen.innerText = displayValue;
     }
 }
+function addDecimal () {
+    if (!(displayValue.includes('.'))) {
+        displayValue += "."
+    }
+}
 
 function keyPress(e) {
     if (e.target.className === 'key num-key') {
@@ -82,6 +87,8 @@ function keyPress(e) {
         performOperation(e);
     } else if (e.target.id === 'key-equal') {
         calculate();
+    } else if (e.target.id === 'key-decimal') {
+        addDecimal();
     }
     updateDisplay();
 }
