@@ -12,20 +12,20 @@ body {
 #calculator {
     height: fit-content;
     width: fit-content;
-    font-size: 20px;
-    font-family: 'Comic Neue', cursive;
-    font-weight: bold;
     background-color:#666666;
     padding: 0.6em;
     border-radius: 7px;
     box-shadow: 5px 5px rgb(40, 40, 40);
 }
 #screen {
-    height: 3em;
+    text-align: end;
+    font-size: 18px;
+    font-family: 'Orbitron', sans-serif;
+    padding: 0.9em 0.8em;
     margin: 1.5em 0.5em;
     border: 1px solid black;
     border-radius: 3px;
-    background-color: rgb(160, 160, 160);
+    background-color: rgb(203, 233, 255);
     box-shadow: inset 5px 5px 5px rgb(40, 40, 40);
 }
 
@@ -38,7 +38,7 @@ body {
     font-size: 20px;
     font-family: 'Comic Neue', cursive;
     font-weight: bold;
-    padding: 0.3em 0.6em;
+    padding: 0.4em 0.6em;
     color: white;
     background-color: #979797;
     border-radius: 7px;
