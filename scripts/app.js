@@ -25,11 +25,11 @@ function operate (op, x , y) {
         return divide(x,y);
     }
 }
-function enterNumber (e) {
+function enterNumber (value) {
     if (displayValue === "0" || displayValue == result) {
-        displayValue = e.target.value;
+        displayValue = value;
     } else {
-        displayValue += e.target.value;
+        displayValue += value;
     } 
 }
 function clear () {
@@ -43,15 +43,15 @@ function deleteChar () {
         displayValue = displayValue.slice(0, -1)
     }
 }
-function performOperation (e) {
+function performOperation (value) {
     if (!operator) {
         result = Number(displayValue);
-        operator = e.target.value;
+        operator = value;
     } else {
         let x = result;
         let y = Number(displayValue);
         result = operate(operator, x, y);
-        operator = e.target.value;
+        operator = value;
         displayValue = result.toString(10)
     }   
 }
@@ -76,18 +76,48 @@ function addDecimal () {
     }
 }
 
-function keyPress(e) {
+function mousePress(e) {
+    let val = e.target.value;
     if (e.target.className === 'key num-key') {
-        enterNumber (e);
+        enterNumber (val);
     } else if (e.target.id === "key-C") {
        clear();
     } else if (e.target.id === 'key-del') {
         deleteChar();
     } else if (e.target.className === 'key op-key') {
-        performOperation(e);
+        performOperation(val);
     } else if (e.target.id === 'key-equal') {
         calculate();
     } else if (e.target.id === 'key-decimal') {
+        addDecimal();
+    }
+    updateDisplay();
+}
+
+function keyPress(e) {
+    let numKeys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+    let opKeys = ["+", "-", "*", "/"];
+    
+    if (numKeys.includes(e.key)) {
+        enterNumber(e.key);
+    } else if (e.key === 'Delete') {
+        clear();
+    } else if (e.key === 'Backspace') {
+        deleteChar();
+    }
+    else if (opKeys.includes(e.key)) {
+        if (e.key === "+") {
+            performOperation('add');
+        } else if (e.key === "-") {
+            performOperation('subtract');
+        } else if (e.key === "*") {
+            performOperation('multiply');
+        } else {
+            performOperation('divide');
+        }
+    } else if (e.key === 'Enter' || e.key === '=') {
+        calculate();
+    } else if (e.key === '.') {
         addDecimal();
     }
     updateDisplay();
@@ -99,4 +129,6 @@ let result = null;
 let operator;
 
 let keys = document.querySelectorAll(".key");
-keys.forEach(key => key.addEventListener('click', keyPress))
+keys.forEach(key => key.addEventListener('click', mousePress))
+
+window.addEventListener('keydown', keyPress)
